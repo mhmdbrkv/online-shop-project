@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title><%=pageTitle%></title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <%- include("navbar")%>
+    <section>
+      
+      <form action="/admin/add" method="POST" enctype="multipart/form-data">
+        <div class="form">
+          <%if(err){%>
+            <p style="font-size: 20px"><%= err.msg %></p>
+          <%}%>
+          <br>
+          <label for="">Product Name </label>
+          <br />
+          <input class="input" type="text" name="name" />
+          <br />
+          <label for="">Product Price </label>
+          <br />
+          <input class="input" type="number" name="price" />
+          <br />
+          <label for="">Product description </label>
+          <br />
+          <input class="input" type="text" name="description" />
+          <br />
+          <label for="">Product category </label>
+          <br />
+          <select class="input" name="category">
+            <option value=""></option>
+            <option value="Phones">Phones</option>
+            <option value="Cars">Cars</option>
+            <option value="Clothes">Clothes</option>
+            <option value="PCs">PCs</option>
+          </select>
+          <br />
+          <label for="">Product img </label>
+
+          <input type="file" name="img" />
+          <br />
+          <br />
+          <input type="submit" />
+        </div>
+      </form>
+    </section>
+  </body>
+</html>

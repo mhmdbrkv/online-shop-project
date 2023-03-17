@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title><%=pageTitle%></title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <%-include("navbar")%>
+
+    <section>
+      <form action="/signup" method="POST">
+        <div class="form">
+          <h1>Sign Up</h1>
+          <br />
+          <p style="font-size: 20px"><%=status%></p>
+          <input
+            required
+            class="input"
+            type="text"
+            placeholder="User Name"
+            name="userName"
+          />
+          <br />
+          <input
+            required
+            class="input"
+            type="email"
+            placeholder="Email"
+            name="email"
+          />
+          <br />
+          <input
+            required
+            class="input"
+            type="password"
+            placeholder="Password"
+            name="pass"
+          />
+          <br />
+
+          <% let passError = errors.find(err => err.param === 'pass' );  if(passError) { %>
+
+          <p><%= passError.msg %></p>
+          <br />
+
+          <% } %>
+          <input
+            required
+            class="input"
+            type="password"
+            placeholder="Confirm Password"
+            name="cpass"
+          />
+          <br />
+          <% let cError = errors.find(err => err.param === 'cpass' );  if(cError) { %>
+
+            <p><%= cError.msg %></p>
+            <br />
+  
+            <% } %>
+          <input type="submit" />
+          <br />
+          <p style="font-size: 20px">
+            Already have an e-mail?
+            <a href="/login" style="text-decoration: none; color: blueviolet"
+              >Log In</a
+            >
+          </p>
+        </div>
+      </form>
+    </section>
+  </body>
+</html>

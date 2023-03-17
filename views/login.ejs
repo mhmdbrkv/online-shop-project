@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title><%=pageTitle%></title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <%-include("navbar")%>
+
+    <section>
+      <form action="/login" method="POST">
+        <div class="form">
+          <h1>Log In</h1>
+          <br />
+          <p style="font-size: 20px"><%=status%></p>
+
+          <input
+            required
+            class="input"
+            type="email"
+            placeholder="Email"
+            name="email"
+          />
+          <br />
+          <input
+            required
+            class="input"
+            type="password"
+            placeholder="Password"
+            name="pass"
+          />
+          <br />
+          <% let passError = errors.find(err => err.param === 'pass' );  if(passError) { %>
+
+            <p><%= passError.msg %></p>
+            <br />
+  
+            <% } %>
+          <input type="submit" />
+          <br />
+          <p style="font-size: 20px">
+            Do not have an e-mail?
+            <a href="/signup" style="text-decoration: none; color: blueviolet"
+              >Sign Up</a
+            >
+          </p>
+        </div>
+      </form>
+    </section>
+  </body>
+</html>

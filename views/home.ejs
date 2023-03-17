@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title><%=pageTitle%> - Online Shop</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <%-include("navbar")%>
+
+    <section>
+      <div class="filter">
+        <form action="/" method="GET">
+          <select name="categories" style="width: 150px; height: 25px">
+            <option value="All">All</option>
+            <option value="Phones">Phones</option>
+            <option value="Cars">Cars</option>
+            <option value="Clothes">Clothes</option>
+            <option value="PCs">PCs</option>
+          </select>
+          <input type="submit" style="width: 80px; height: 25px" value="filter" />
+        </form>
+      </div>
+      
+      <%if (error) { %>
+        <h1 style="text-align: center; padding-top: 5%;"><%= error.msg%></h1>
+        <%}%>
+
+
+      <%if(products.length !== 0){%> <%for(let product of products){%>
+      <div>
+        <div class="img-container">
+          <img src="<%=product.img%>" height="300px" width="405px" />
+          <div>
+            <a
+              href="/info/<%=product._id%>"
+              style="color: #000; text-decoration: none; font-size: 25px"
+            >
+              <p><%=product.name%></p></a
+            >
+            <p><%=product.price%> $</p>
+
+            <form action="/cart" method="POST">
+              <input
+              required
+                type="number"
+                name="amount"
+                style="width: 80px"
+                value="1"
+              />
+              <input type="hidden" name="name" value="<%=product.name%>">
+              <input type="hidden" name="price" value="<%=product.price%>">
+              <input type="hidden" name="productID" value="<%=product._id%>">
+              <input type="hidden" name="redirect" value="/">
+              <input type="submit" style="width: 80px" value="Add to cart" />
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <%}%> <%} else {%>
+
+      <h1>there is no product right here</h1>
+
+      <%}%>
+    </section>
+    <footer></footer>
+  </body>
+</html>

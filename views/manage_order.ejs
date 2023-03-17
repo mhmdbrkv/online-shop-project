@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title><%=pageTitle%></title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+
+  <body style="background-color:aqua">
+
+    <%- include("navbar")%>
+
+    <div class="form">
+      <form action="/admin/manage_order" method="GET">
+        <input type="submit" value="all">
+        <input type="submit" value="pending" name="pending">
+        <input type="submit" value="sent" name="sent">
+        <input type="submit" value="completed" name="completed">
+      </form>
+
+      <form action="/admin/manage_order/filter" method="POST">
+        <input type="text" placeholder="search by email" name="email">
+        <input type="submit" value="search">
+      </form>
+      <%if(err){%>
+        <p><%=err.msg%></p>
+        <%}%>
+    </div>
+    
+    <div style="padding: 5%">
+      <% if(data.length === 0) {%>
+      <h1 style="text-align: center">There are no orders</h1>
+      <%} else {%>
+
+      <table border="1" style="width: 100%; text-align: center; margin: 0 auto;font-size: 20px;">
+        <thead>
+          <td></td>
+          <td>email</td>
+          <td>name</td>
+          <td>price</td>
+          <td>amount</td>
+          <td>total</td>
+          <td>address</td>
+          <td>status</td>
+        </thead>
+        <tbody >
+
+          <% for(let i = 0; i < data.length; i++) { %>
+          <tr>
+            <td><%=i+1%></td>
+            <td><%=data[i].email%></td>
+            <td><a style="text-decoration: none;" href="/info/<%=data[i].productID%>"><%=data[i].name%></a></td>
+            <td><%=data[i].price%> $</td>
+            
+            <form method="POST">
+              <td>
+                <%=data[i].amount%>
+              </td>
+              <td><%=data[i].price * data[i].amount%> $</td>
+              <td><%=data[i].address%></td>
+              <td>
+                <form action="/admin/manage_order" method="POST">
+                  <select name="status">
+                    <option value=""><%=data[i].status%></option>
+                    <option value="pending">pending</option>
+                    <option value="sent">sent</option>
+                    <option value="completed">completed</option>
+                  </select>
+                  <input type="hidden" value="<%=data[i]._id%>" name="id">
+                  <input type="submit" value="Save">  
+                </form>
+              </td>
+          </tr>
+            </form>
+          <%}%>
+        </tbody>
+      </table>
+
+      <%}%>
+    </div>
+  </body>
+</html>

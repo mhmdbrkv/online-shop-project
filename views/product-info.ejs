@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title><%=pageTitle%></title>
+    <link rel="stylesheet" href="/styles.css" />
+    <style>
+      body{
+        background-color:aqua;
+      }
+    </style>
+  </head>
+  <body>
+    <%-include("navbar")%>
+
+    <%if (error) { %>
+      <h1 style="text-align: center; padding-top: 5%;"><%= error.msg%></h1>
+      <%}%>
+    <div>
+      <div class="product-info-img">
+        <img src="/<%=Info.img%>" width="500px" height="500px" />
+      </div>
+      <div class="product-info-disc">
+        <p style="color: rgb(0, 0, 0); font-size: 30px"><%=Info.name%></p>
+        <p style="color: rgb(0, 0, 0); font-size: 25px">Price: <%=Info.price%> $</p>
+        <p style="color: rgb(0, 0, 0); font-size: 25px"><%=Info.description%></p>
+        <form action="/cart" method="POST">
+          <input type="hidden" name="name" value="<%=Info.name%>">
+          <input type="hidden" name="price" value="<%=Info.price%>">
+          <input type="hidden" name="productID" value="<%=Info._id%>">
+          <input type="hidden" name="redirect" value="/info/<%=Info._id%>">
+          <input required type="number" name="amount" style="width: 80px; height: 25px;" value="1" />
+          <input type="submit" style="width: 90px; height: 30px;" value="Add to cart" />  
+        </form>
+      </div>
+    </div>
+  </body>
+</html>
