@@ -3,36 +3,36 @@ const OrdersOrder = require("../models/order.model");
 const email_model = require("../models/auth.model");
 
 exports.postOrder = async (req, res, next) => {
-  if (req.body.cartID) {
-    let order = await Orderscart.getCartByid(req.body.cartID);
-    let Email = await email_model.getElementById(req.session.userID);
-    order.address = req.body.address;
-    order.email = Email.email;
-    order.timestamp = Date.now();
-    await OrdersOrder.Add_Order(order)
-      .then(() => {
-        next();
-      })
-      .catch(() => res.redirect("/error"));
-  } else {
-    let order = await Orderscart.getAllCarts();
-    let Email = await email_model.getElementById(req.session.userID);
+  let Email = await email_model.getElementById(req.session.userID);
+  let flag = false;
+  let order;
 
-    for (const item of order) {
-      await OrdersOrder.Add_Order({
-        name: item.name,
-        price: item.price,
-        amount: item.amount,
-        userID: item.userID,
-        productID: item.productID,
-        address: req.body.address,
-        email: Email.email,
-        timestamp: Date.now(),
-      }).catch(() => res.redirect("/error"));
-    }
+  if (req.body.cartID) {
+    order = await Orderscart.getCartByid(req.body.cartID);
+  } else {
+    order = await Orderscart.getAllCarts();
+    flag = true;
+  }
+
+  for (const item of order) {
+    await OrdersOrder.Add_Order({
+      name: item.name,
+      price: item.price,
+      amount: item.amount,
+      userID: item.userID,
+      productID: item.productID,
+      address: req.body.address,
+      email: Email.email,
+      timestamp: Date.now(),
+    }).catch(() => res.redirect("/error"));
+  }
+
+  if (flag) {
     await Orderscart.removeAll_item(req.session.userID)
       .then(() => res.redirect("/cart"))
       .catch(() => res.redirect("/error"));
+  } else {
+    next();
   }
 };
 
