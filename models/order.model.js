@@ -133,11 +133,11 @@ exports.remove_item = (ID) => {
   });
 };
 
-exports.removeAll_item = () => {
+exports.removeAll_item = (ID) => {
   return new Promise((resolve, reject) => {
     mongoose
       .connect(url)
-      .then(() => OrderModel.deleteMany())
+      .then(() => OrderModel.deleteMany({ userID: ID }))
       .then(() => {
         mongoose.disconnect();
         resolve();
