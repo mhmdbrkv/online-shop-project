@@ -6,16 +6,10 @@ exports.postOrder = async (req, res, next) => {
   if (req.body.cartID) {
     let order = await Orderscart.getCartByid(req.body.cartID);
     let Email = await email_model.getElementById(req.session.userID);
-    await OrdersOrder.Add_Order({
-      name: order.name,
-      price: order.price,
-      amount: order.amount,
-      userID: order.userID,
-      productID: order.productID,
-      address: req.body.address,
-      email: Email.email,
-      timestamp: Date.now(),
-    })
+    order.address = req.body.address;
+    order.email = Email.email;
+    order.timestamp = Date.now();
+    await OrdersOrder.Add_Order(order)
       .then(() => {
         next();
       })
@@ -36,7 +30,7 @@ exports.postOrder = async (req, res, next) => {
         timestamp: Date.now(),
       }).catch(() => res.redirect("/error"));
     }
-    await Orderscart.removeAll_item()
+    await Orderscart.removeAll_item(req.session.userID)
       .then(() => res.redirect("/cart"))
       .catch(() => res.redirect("/error"));
   }
@@ -65,7 +59,7 @@ exports.postRemove = (req, res, next) => {
 };
 
 exports.postRemoveAll = (req, res) => {
-  OrdersOrder.removeAll_item()
+  OrdersOrder.removeAll_item(req.session.userID)
     .then(() => res.redirect("/orders"))
     .catch((err) => res.redirect("/error"));
 };
